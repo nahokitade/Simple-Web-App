@@ -17,7 +17,14 @@ public class madlibServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 
-		String[] madlibSentence = {"hello <noun> "};
+		String[] madlibSentence = {"A <animal> can't change his <noun>",
+								   "<noun> speak louder than <noun>",
+								   "<verb> a dead <animal>",
+								   "Don't <verb> your <animal> before they <verb>",
+								   "Get up on the <adjective> side of the <noun>",
+								   "Never <verb> the hand that <verb> you",
+								   "The <adjective> they are the <adjective> they <verb>"
+								  };
 
 		int randInt;
 		String currentSentence = "";

@@ -7,11 +7,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-
+/*
+ * Servlet that will output one word from a requested part of speech.
+ * 
+ * @author Naho Kitade
+ */
 @SuppressWarnings("serial")
 public class getwordServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+		
+		// all the different words shown
 		String[] verb = {"hug", "kiss", "bake", "scatter", "kick", "fix"};
 		String[] noun = {"circle", "beast", "crow", "crayon", "bomb", "brain"};
 		String[] adjective = {"adorable", "gifted", "famous", "jealous", "mysterious", "lazy"};
@@ -28,6 +34,7 @@ public class getwordServlet extends HttpServlet {
 			String[] splitQuery = query.split("=");
 			if(splitQuery.length == 2 && splitQuery[0].equals("pos")){
 				String[] partOfSpeech;
+				// see which part of speech is requested
 				switch (splitQuery[1]){
 					case "verb":
 						partOfSpeech = verb;
@@ -50,11 +57,13 @@ public class getwordServlet extends HttpServlet {
 					case "exclaimation":
 						partOfSpeech = exclaimation;
 						break;
+					// unhandled cases return any random part of speech
 					default:
 						randInt = (int) (Math.random() * speechStrings.length);
 						partOfSpeech = speechStrings[randInt];
 						break;
 				}
+				// fetch a random element from the array of the current part of speech and print.
 				randInt = (int) (Math.random() * partOfSpeech.length);
 				resp.getWriter().println(partOfSpeech[randInt]);
 			}

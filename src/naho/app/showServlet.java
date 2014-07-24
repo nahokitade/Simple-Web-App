@@ -10,6 +10,11 @@ import java.util.ArrayList;
 
 import javax.servlet.http.*;
 
+/*
+ * Servlet that will show everyone's server's convert function on a queried word.
+ * 
+ * @author Naho Kitade
+ */
 @SuppressWarnings("serial")
 public class showServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -27,17 +32,23 @@ public class showServlet extends HttpServlet {
 					peers.add(line);
 				}
 				reader.close();
+				
+				// call convert on all servers who have implemented that feature and print each
+				// page's result.
 				for(String peer : peers){
 					if(peer.equals("")) continue;
 					URL peerUrl = new URL(peer + "/convert?" + query);
 					resp.getWriter().println(peerUrl);
 					HttpURLConnection urlCheck = (HttpURLConnection) peerUrl.openConnection();
 					int responseCode = urlCheck.getResponseCode();
+					
+					// carry on to another url if the current url gives error
 					if(responseCode == 404){
 						resp.getWriter().println("Sorry, this page does not exist :("); 
 						resp.getWriter().println();
-						continue;
+						continue; 
 					}
+					
 					BufferedReader peerReader = new BufferedReader(new InputStreamReader(peerUrl.openStream(), "UTF-8"));
 					while ((line = peerReader.readLine()) != null) {
 						resp.getWriter().println(line);
