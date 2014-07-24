@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	<servlet>
+		<servlet-name>convert</servlet-name>
+		<servlet-class>naho.app.convertServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>convert</servlet-name>
+		<url-pattern>/convert</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>show</servlet-name>
+		<servlet-class>naho.app.showServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>show</servlet-name>
+		<url-pattern>/show</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>peers</servlet-name>
+		<servlet-class>naho.app.peersServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>peers</servlet-name>
+		<url-pattern>/peers</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>getword</servlet-name>
+		<servlet-class>naho.app.getwordServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>getword</servlet-name>
+		<url-pattern>/getword</url-pattern>
+	</servlet-mapping>
+		<servlet>
+		<servlet-name>madlib</servlet-name>
+		<servlet-class>naho.app.madlibServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>madlib</servlet-name>
+		<url-pattern>/madlib</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>
