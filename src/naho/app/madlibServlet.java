@@ -38,7 +38,7 @@ public class madlibServlet extends HttpServlet {
 
 		String query = req.getQueryString();
 		resp.setContentType("text/plain; charset=UTF-8");
-		
+
 		// if there is a query, that query becomes the madlib sentence.
 		if(query != null){
 			String[] splitQuery = query.split("=");
@@ -79,12 +79,12 @@ public class madlibServlet extends HttpServlet {
 
 		Pattern pattern = Pattern.compile("(<[a-z]+>)");
 		Matcher matcher = pattern.matcher(currentSentence);
-		
+
 		// get all the part of speech of words that we need to replace
 		while(matcher.find()){
 			rawWordsNeeded.add(matcher.group(1));
 		}
-		
+
 		// take of the first and last < > of the strings just gotten.
 		for(String wordProcessing : rawWordsNeeded){
 			wordsNeeded.add(wordProcessing.substring(1, wordProcessing.length() - 1));
@@ -98,7 +98,9 @@ public class madlibServlet extends HttpServlet {
 			peers.add(line);
 		}
 		reader.close();
-		
+
+		boolean doesntExist = false;
+
 		// for every server that has implemented getword, call the getword with the 
 		// appropriate part of speech and store those in an array
 		for(String peer : peers){
@@ -112,7 +114,8 @@ public class madlibServlet extends HttpServlet {
 				if(responseCode == 404){
 					resp.getWriter().println("Sorry, this page does not exist :("); 
 					resp.getWriter().println();
-					continue;
+					doesntExist = true;
+					break;
 				}
 				BufferedReader peerReader = new BufferedReader(new InputStreamReader(peerUrl.openStream(), "UTF-8"));
 				while ((line = peerReader.readLine()) != null) {
@@ -134,24 +137,27 @@ public class madlibServlet extends HttpServlet {
 				wordRead = false;
 			}
 
-			// construct the final sentence appropriately making sure that the appropriate array
-			// starts first.
-			for(int i = 0; i < wordsGotten.size() && i < splittedArray.size(); i++){
-				if(startFirst){
-					resp.getWriter().print(wordsGotten.get(i));
-					resp.getWriter().print(splittedArray.get(i));
+			if(!doesntExist){
+				// construct the final sentence appropriately making sure that the appropriate array
+				// starts first.
+				for(int i = 0; i < wordsGotten.size() && i < splittedArray.size(); i++){
+					if(startFirst){
+						resp.getWriter().print(wordsGotten.get(i));
+						resp.getWriter().print(splittedArray.get(i));
+					}
+					else{
+						resp.getWriter().print(splittedArray.get(i));							
+						resp.getWriter().print(wordsGotten.get(i));
+					}
 				}
-				else{
-					resp.getWriter().print(splittedArray.get(i));							
-					resp.getWriter().print(wordsGotten.get(i));
-				}
+				if(wordsGotten.size() < splittedArray.size()) resp.getWriter().print(splittedArray.get(splittedArray.size() - 1));
+				if(wordsGotten.size() > splittedArray.size()) resp.getWriter().print(wordsGotten.get(wordsGotten.size() - 1));
+				resp.getWriter().println();
+				resp.getWriter().println();
 			}
-			if(wordsGotten.size() < splittedArray.size()) resp.getWriter().print(splittedArray.get(splittedArray.size() - 1));
-			if(wordsGotten.size() > splittedArray.size()) resp.getWriter().print(wordsGotten.get(wordsGotten.size() - 1));
-			resp.getWriter().println();
-			resp.getWriter().println();
-
 			wordsGotten.clear();
+			
+			doesntExist = false;
 
 		}
 	}
